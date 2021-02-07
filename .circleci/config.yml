@@ -48,3 +48,8 @@ jobs:
           command: |
             make venv pylint
 
+workflows:
+  default:
+    jobs:
+      - verify
+      - build
