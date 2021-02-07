@@ -38,7 +38,8 @@ jobs:
             pwd
             ls -al 
             make setup venv install
-
+            pip install pylint
+            pylint --version
       - save_cache:
           paths:
             - ./venv
