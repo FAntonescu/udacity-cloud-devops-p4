@@ -1,0 +1,8 @@
+venv
+Dockerfile
+Makefile
+process.yml
+.circleci
+run_docker.sh
+run_kubernetes.sh
+upload_docker.sh

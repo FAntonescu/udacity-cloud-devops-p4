@@ -1,0 +1,35 @@
+version: 2
+jobs:
+  build:
+    docker:
+    - image: python:3.7.3-stretch
+    working_directory: ~/repo
+    steps:
+    - checkout
+    - restore_cache:
+        keys:
+        - v1-dependencies-{{ checksum "requirements.txt" }}
+        - v1-dependencies-
+    - run:
+        name: install dependencies
+        command: "pwd\nls -al \nmake setup venv install\n"
+    - run:
+        name: hadolint
+        image: hadolint/hadolint:v1.21.0-3-g68ed571-alpine
+        command: |
+          make hadolint
+    - save_cache:
+        paths:
+        - ./venv
+        key: v1-dependencies-{{ checksum "requirements.txt" }}
+    - run:
+        name: run lint
+        command: |
+          make venv pylint
+    environment:
+    - CIRCLE_COMPARE_URL: https://github.com/CircleCI-Public/circleci-cli/compare/0000000000000000000000000000000000000000...0000000000000000000000000000000000000000
+workflows:
+  version: 2
+  workflow:
+    jobs:
+    - build
