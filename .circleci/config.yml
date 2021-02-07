@@ -4,6 +4,15 @@
 #
 version: 2
 jobs:
+  verify:
+    docker:
+      - image: hadolint/hadolint:v1.21.0-3-g68ed571-alpine
+    steps:
+      - checkout 
+      - run:
+        name: hadolint
+        command: |
+          hadolint --ignore DL3042 Dockerfile
   build:
     docker:
     # Use the same Docker base as the project
@@ -27,12 +36,6 @@ jobs:
             pwd
             ls -al 
             make setup venv install
-
-      - run:
-          name: hadolint
-          image: hadolint/hadolint:v1.21.0-3-g68ed571-alpine
-          command: |
-            make hadolint
 
       - save_cache:
           paths:
